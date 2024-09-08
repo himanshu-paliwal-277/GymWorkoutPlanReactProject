@@ -7,7 +7,7 @@ function PushWorkout() {
     const navigate = useNavigate();
     return (
         <>
-            <h1 className="py-3 mx-16 mt-6 text-lg font-bold text-center text-white bg-green-400 rounded-lg">Push Workout</h1>
+            <h1 className="py-3 mx-16 mt-6 text-lg font-bold text-center text-white bg-green-500 rounded-lg">Push Workout</h1>
             <div className="flex flex-col gap-3 px-6 py-8">
                 <p className="font-bold text-center ">Chest</p>
                 <Workout image={pushWorkoutExercises[0].imageUrl} workoutName={pushWorkoutExercises[0].name} />

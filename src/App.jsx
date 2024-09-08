@@ -6,6 +6,7 @@ import PushWorkout from "./Components/PushPullLegWorkoutPlan/PushWorkout/PushWor
 import PullWorkout from "./Components/PushPullLegWorkoutPlan/PullWorkout/PullWorkout";
 import LegsWorkout from "./Components/PushPullLegWorkoutPlan/LegWorkout/LegsWorkout";
 import Rest from "./Components/Rest/Rest";
+import Report from "./Pages/Report";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="/PullWorkout" element={<PullWorkout />} />
         <Route path="/LegsWorkout" element={<LegsWorkout />} />
         <Route path="/Rest" element={<Rest />} />
+        <Route path="/Report" element={<Report />} />
         <Route path="*" element={<h1>Page Not Found</h1>} />
       </Routes>
     </>

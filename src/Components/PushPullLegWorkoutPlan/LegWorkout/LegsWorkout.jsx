@@ -7,7 +7,7 @@ function LegsWorkout() {
     const navigate = useNavigate();
     return (
         <>
-            <h1 className="py-3 mx-16 mt-6 text-lg font-bold text-center text-white bg-green-400 rounded-lg">Legs Workout</h1>
+            <h1 className="py-3 mx-16 mt-6 text-lg font-bold text-center text-white bg-green-500 rounded-lg">Legs Workout</h1>
             <div className="flex flex-col gap-3 px-6 py-8">
                 <p className="font-bold text-center ">Legs</p>
                 <Workout image={LegsWorkoutExercises[0].imageUrl} workoutName={LegsWorkoutExercises[0].name} />
