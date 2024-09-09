@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 function Report() {
   const [weightData, setWeightData] = useState([]);
   const [inputValue, setInputValue] = useState("");
+  const [invalidInput, setInvalidInput] = useState(false);
   const navigate = useNavigate();
 
   // Only access localStorage in the client-side
@@ -33,14 +34,22 @@ function Report() {
     if (inputValue === "") {
       console.log("Enter your current weight");
     } else {
-      if (typeof window !== "undefined") {
-        let day = localStorage.getItem("day");
-        day = day ? parseInt(day, 10) : 0;
-        if (isNaN(day)) day = 0; // Ensure valid day value
-        day += 1;
-        addWeightDataToLocalStorage(String(day), inputValue);
-        localStorage.setItem("day", day);
+      if (inputValue <= 90 && inputValue >= 40) {
+        if (typeof window !== "undefined") {
+          let day = localStorage.getItem("day");
+          day = day ? parseInt(day, 10) : 0;
+          if (isNaN(day)) day = 0; // Ensure valid day value
+          day += 1;
+          addWeightDataToLocalStorage(String(day), inputValue);
+          localStorage.setItem("day", day);
+          setInputValue("");
+        }
+      } else {
+        setInvalidInput(true);
         setInputValue("");
+        setTimeout(() => {
+          setInvalidInput(false);
+        }, 2000);
       }
     }
   }
@@ -86,14 +95,30 @@ function Report() {
             Add
           </button>
         </div>
-        <WeightGraphData data={weightData} />
+        <div className="w-full sm:w-[90%] md:w-[80%] lg:w-[70%] mx-auto overflow-x-auto">
+          <WeightGraphData data={weightData} />
+        </div>
+
         <button
           onClick={deleteRecentlyAddedData}
-          className="px-4 py-2 text-white bg-red-500 rounded-lg active:bg-opacity-90"
+          className="px-4 py-2 mt-4 text-white bg-red-500 rounded-lg active:bg-opacity-90"
         >
           Delete
         </button>
+        <div
+          className={`absolute p-4 bg-gray-200 rounded-lg top-40 bg-opacity-80 text-center ${
+            invalidInput ? "block" : "hidden"
+          }`}
+        >
+          <p>Weight should be in range:</p>
+          <p className="mt-2">
+            40 {"<="} weight {"<="} 90
+          </p>
+        </div>
       </div>
+
+      {/* <div className="absolute top-0 flex justify-center m-auto"> */}
+      {/* </div> */}
 
       <BackButton onClickHandler={() => navigate("/home")} />
     </>

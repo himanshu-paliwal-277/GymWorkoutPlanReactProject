@@ -39,7 +39,7 @@ function WeightGraphData({data}) {
             width={chartWidth}
             height={400}
             data={data}
-            margin={{ top: 30, right: 30, left: 5, bottom: 50 }}
+            margin={{ top: 30, right: 30, left: 5, bottom: 20 }}
           >
             <CartesianGrid stroke="#ebebeb" strokeDasharray="3 3" />
             <XAxis
