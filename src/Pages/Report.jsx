@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import WeightGraphData from "../Components/Graph/weightGraphData";
+import WeightGraphData from "../Components/Graph/WeightGraphData";
 import BackButton from "../Components/BackButton/BackButton";
 import { useNavigate } from "react-router-dom";
 
@@ -17,10 +17,12 @@ function Report() {
   }, []);
 
   const addWeightDataToLocalStorage = (day, weight) => {
-    const existingData = JSON.parse(localStorage.getItem("weightData")) || [];
-    existingData.push({ day, weight });
-    localStorage.setItem("weightData", JSON.stringify(existingData));
-    setWeightData(existingData);
+    if (typeof window !== "undefined") {
+      const existingData = JSON.parse(localStorage.getItem("weightData")) || [];
+      existingData.push({ day, weight });
+      localStorage.setItem("weightData", JSON.stringify(existingData));
+      setWeightData(existingData);
+    }
   };
 
   function inputHandler(event) {
@@ -31,30 +33,35 @@ function Report() {
     if (inputValue === "") {
       console.log("Enter your current weight");
     } else {
-      let day = localStorage.getItem("day");
-      day = day ? parseInt(day, 10) : 0;
-      day += 1;
-      addWeightDataToLocalStorage(String(day), inputValue);
-      localStorage.setItem("day", day);
-      setInputValue("");
+      if (typeof window !== "undefined") {
+        let day = localStorage.getItem("day");
+        day = day ? parseInt(day, 10) : 0;
+        if (isNaN(day)) day = 0; // Ensure valid day value
+        day += 1;
+        addWeightDataToLocalStorage(String(day), inputValue);
+        localStorage.setItem("day", day);
+        setInputValue("");
+      }
     }
   }
 
   function deleteRecentlyAddedData() {
     let existingData = [...weightData];
     if (existingData.length > 0) {
-      let obj = existingData.pop();
-      let day = obj.day;
-      setWeightData(existingData);
+      if (typeof window !== "undefined") {
+        let obj = existingData.pop();
+        let day = obj.day;
+        setWeightData(existingData);
 
-      let data = JSON.parse(localStorage.getItem("weightData")) || [];
-      data = data.filter((entry) => entry.day !== day);
-      localStorage.setItem("weightData", JSON.stringify(data));
+        let data = JSON.parse(localStorage.getItem("weightData")) || [];
+        data = data.filter((entry) => entry.day !== day);
+        localStorage.setItem("weightData", JSON.stringify(data));
 
-      let dayValue = localStorage.getItem("day");
-      dayValue = parseInt(dayValue, 10);
-      dayValue -= 1;
-      localStorage.setItem("day", dayValue);
+        let dayValue = localStorage.getItem("day");
+        dayValue = parseInt(dayValue, 10);
+        dayValue -= 1;
+        localStorage.setItem("day", dayValue);
+      }
     } else {
       console.log("No data to delete.");
     }
