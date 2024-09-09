@@ -1,34 +1,33 @@
-// import { useEffect, useState } from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import WeightGraphData from "../Components/Graph/weightGraphData";
 import BackButton from "../Components/BackButton/BackButton";
 import { useNavigate } from "react-router-dom";
 
 function Report() {
-  const existingData = JSON.parse(localStorage.getItem("weightData")) || [];
-  const [weightData, setWeightData] = useState(existingData);
+  const [weightData, setWeightData] = useState([]);
   const [inputValue, setInputValue] = useState("");
   const navigate = useNavigate();
 
+  // Only access localStorage in the client-side
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const existingData = JSON.parse(localStorage.getItem("weightData")) || [];
+      setWeightData(existingData);
+    }
+  }, []);
+
   const addWeightDataToLocalStorage = (day, weight) => {
-    // Retrieve the existing array from localStorage
     const existingData = JSON.parse(localStorage.getItem("weightData")) || [];
-
-    // Add new weight data to the array
     existingData.push({ day, weight });
-
-    // Store the updated array back to localStorage
     localStorage.setItem("weightData", JSON.stringify(existingData));
     setWeightData(existingData);
   };
 
   function inputHandler(event) {
     setInputValue(event.target.value);
-    // console.log("inputValue = ", inputValue);
   }
 
   function addWeight() {
-    console.log("Weight to set = ", inputValue);
     if (inputValue === "") {
       console.log("Enter your current weight");
     } else {
@@ -42,27 +41,14 @@ function Report() {
   }
 
   function deleteRecentlyAddedData() {
-    // Make a shallow copy of weightData
     let existingData = [...weightData];
-
-    // Check if there's any data to delete
     if (existingData.length > 0) {
-      // Pop the last object from the array
       let obj = existingData.pop();
-
-      // Get the day of the last object
       let day = obj.day;
-
-      // Update the state with the new array
       setWeightData(existingData);
 
-      // Get the data from localStorage
       let data = JSON.parse(localStorage.getItem("weightData")) || [];
-
-      // Filter out the entry where the day matches
       data = data.filter((entry) => entry.day !== day);
-
-      // Update localStorage with the filtered data
       localStorage.setItem("weightData", JSON.stringify(data));
 
       let dayValue = localStorage.getItem("day");
